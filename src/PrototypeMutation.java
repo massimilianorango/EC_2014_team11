@@ -3,12 +3,29 @@ import java.util.Random;
 
 public class PrototypeMutation implements IMutation {
 
+
     @Override
-    public Individual mutate(double[] dna) {
-        dna[3] = dna[3]+player11.rnd.nextDouble();
-        
+    public void mutate(Individual individual) {
         // TODO Auto-generated method stub
-        return player11.createIndividual(dna);
+        
+    }
+
+    @Override
+    public void crossoverMutationValues(Individual crossedIndividual, Individual parentA, Individual parentB) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void intializeMutationParameters(Individual individual) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setRecombination(IRecombination recombination) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

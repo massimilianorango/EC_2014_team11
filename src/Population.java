@@ -31,6 +31,10 @@ public class Population {
         individuals.remove(individual);
     }
     
+    public void removeAllIndividuals(){
+        individuals.clear();
+    }
+    
     public int getGeneration(){
         return generation;
     }

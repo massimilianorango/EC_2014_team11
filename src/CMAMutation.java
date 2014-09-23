@@ -17,11 +17,8 @@ public class CMAMutation implements IMutation {
     /**
      * implement the CMA Algorithm
      */
-    public Individual mutate(double[] dna) {
-        this.individual = individual;
-        // TODO Auto-generated method stub
-        //see ch04.pdf, p. 25
-        return player11.createIndividual(dna);
+    public void mutate(Individual dna) {
+
     }
     
     public double calculate_c_covarianceValue(int i_index, int j_index){
@@ -60,6 +57,24 @@ public class CMAMutation implements IMutation {
     
     public double calculateTauCoordinateWiseLearningRate(){
         return 1/(Math.sqrt(2*Math.sqrt(individual.getGeneration())));
+    }
+
+    @Override
+    public void crossoverMutationValues(Individual crossedIndividual, Individual parentA, Individual parentB) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void intializeMutationParameters(Individual individual) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setRecombination(IRecombination recombination) {
+        // TODO Auto-generated method stub
+        
     }
     
     

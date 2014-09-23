@@ -6,5 +6,11 @@ public interface IMutation {
      * 
      * @return
      */
-    public Individual mutate(double[] dna);
+    public void mutate(Individual individual);
+    
+    public void crossoverMutationValues(Individual crossedIndividual, Individual parentA, Individual parentB);
+    
+    public void intializeMutationParameters(Individual individual);
+    
+    public void setRecombination(IRecombination recombination);
 }

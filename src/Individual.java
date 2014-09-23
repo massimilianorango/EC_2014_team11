@@ -1,14 +1,14 @@
 import java.util.Arrays;
 
-public class Individual implements Comparable{
+public class Individual implements Comparable<Individual>{
 
     private double[] dna = null;
     private double[] sigma_mutation_step_sizes = null;
     private double[] alpha_correlation_parameters = null;
     private Double fitness = null;
-    private int generation;
+    private Integer generation = null;
     
-    public Individual(double[] dna, Double fitness, int generation) {
+    public Individual(double[] dna, Double fitness, Integer generation) {
         super();
         this.dna = dna;
         this.fitness = fitness;
@@ -33,10 +33,10 @@ public class Individual implements Comparable{
         this.fitness = fitness;
     }
     
-    public int getGeneration() {
+    public Integer getGeneration() {
         return generation;
     }
-    public void setGeneration(int generation) {
+    public void setGeneration(Integer generation) {
         this.generation = generation;
     }
     
@@ -54,10 +54,11 @@ public class Individual implements Comparable{
     public void setAlpha_correlation_parameters(double[] alpha_correlation_parameters) {
         this.alpha_correlation_parameters = alpha_correlation_parameters;
     }
+    
     @Override
-    public int compareTo(Object arg0) {
-        if( arg0 instanceof Individual ){
-            Individual comp = (Individual) arg0;
+    public int compareTo(Individual o) {
+        if( o instanceof Individual ){
+            Individual comp = (Individual) o;
             return this.getFitness().compareTo(comp.fitness);
         }
         return 0;
