@@ -54,13 +54,7 @@ public class UncorrelatedMutation implements IMutation {
     @Override
     public void crossoverMutationValues(Individual crossedIndividual, Individual parentA,
             Individual parentB) {
-        
-        double[] child_sigma = new double[10];
-        for(int j = 0; j<10; j++){
-            double di_delta = Math.abs(parentA.getSigma_mutation_step_sizes()[j]-parentB.getSigma_mutation_step_sizes()[j]);
-            child_sigma[j] = parentA.getSigma_mutation_step_sizes()[j]+(player11.rnd.nextDouble()*(2.0*di_delta)-(di_delta));
-        }
-        
+        double[] child_sigma = recombination.crossOperator(parentA.getSigma_mutation_step_sizes(), parentB.getSigma_mutation_step_sizes());      
         crossedIndividual.setSigma_mutation_step_sizes(child_sigma);
     }
 

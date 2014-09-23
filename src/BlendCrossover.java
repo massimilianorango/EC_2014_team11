@@ -1,7 +1,4 @@
 import java.util.ArrayList;
-import java.util.Random;
-
-import org.vu.contest.ContestEvaluation;
 
 
 public class BlendCrossover implements IRecombination {
@@ -39,13 +36,7 @@ public class BlendCrossover implements IRecombination {
     private Individual blendCross(Individual parentOne, Individual parentTwo){
         double[] child_dna = new double[10];
         for(int j = 0; j<10; j++){
-            double di_delta = Math.abs(parentOne.getDna()[j]-parentTwo.getDna()[j]);
-            child_dna[j] = parentOne.getDna()[j]+(player11.rnd.nextDouble()*(2.0*di_delta)-(di_delta));
-            if(child_dna[j] > 5){
-                child_dna[j] = 5; 
-            }else if(child_dna[j] < -5.0){
-                child_dna[j] = -5;
-            }
+            crossOperator(parentOne.getDna(),parentTwo.getDna());
         }
 
         Individual child = new Individual(child_dna,null,null);
@@ -54,5 +45,20 @@ public class BlendCrossover implements IRecombination {
         //create individual
         return child;
         
+    }
+    
+    public double[] crossOperator(double[] a, double[] b){
+        double[] child_dna = new double[10];
+        for(int j = 0; j<10; j++){
+            double di_delta = Math.abs(a[j]-b[j]);
+            child_dna[j] = a[j]+(player11.rnd.nextDouble()*(2.0*di_delta)-(di_delta));
+            if(child_dna[j] > 5){
+                child_dna[j] = 5; 
+            }else if(child_dna[j] < -5.0){
+                child_dna[j] = -5;
+            }
+        }
+        
+        return child_dna;
     }
 }

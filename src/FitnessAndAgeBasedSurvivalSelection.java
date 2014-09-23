@@ -9,7 +9,6 @@ public class FitnessAndAgeBasedSurvivalSelection implements ISurvivalSelection{
     
     public void selectSurvivals(Population population, ArrayList<Individual> children){
         Iterator<Individual> iter = population.getIndividuals().iterator();
-        @SuppressWarnings("unchecked")
         ArrayList<Individual> generationSurvivors = new ArrayList<Individual>();
         //delete individuals which are MAXIMUM_AGE years old
         while(iter.hasNext()){
