@@ -1,5 +1,6 @@
 
 
+
 public interface IParentSelection {
 
     public Individual[] selectParents(Population population);
@@ -10,4 +11,6 @@ public interface IParentSelection {
      * @param population
      */
     public void prepareSelection(Population population);
+    
+    public void setFitnessCalculation(IFitnessCalculation fitness);
 }

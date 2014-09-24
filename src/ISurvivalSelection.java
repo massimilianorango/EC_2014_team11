@@ -1,9 +1,12 @@
+
 import java.util.ArrayList;
 
 
 
 public interface ISurvivalSelection {
 
+    public void setFitnessCalculation(IFitnessCalculation fitness);
+    
     /**
      * 
      * @param population

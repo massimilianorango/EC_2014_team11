@@ -8,11 +8,11 @@ import org.vu.contest.ContestSubmission;
 
 public class player11 implements ContestSubmission {
     
-    public static int EVALUATIONS_LIMIT;
-    public static int NUMBER_OF_PARENT_PAIRS = 20;
-    public static int NUMBER_OF_CHILDREN = 4;
-    public static int MAX_POUPULATION_SIZE = 100;
-    private static IFitness fitnessCalculation = null;
+    public static int EVALUATIONS_LIMIT = Integer.MAX_VALUE;
+    public static int NUMBER_OF_PARENT_PAIRS = 1;
+    public static int NUMBER_OF_CHILDREN = 2;
+    public static int MAX_POPULATION_SIZE = 50;
+    private static IFitnessCalculation fitnessCalculation = null;
     private static IInitialPopulation initialPopulation = null;
     private static IParentSelection parentSelection = null;
     private static IRecombination recombination = null;
@@ -33,22 +33,6 @@ public class player11 implements ContestSubmission {
 
 	@Override
 	public void run() {
-	      // 10 dimension functions
-        // all functions should be maximized
-        // Search space [-5,5]^10
-        // best fitness for all function is 10
-        // which population size should we choose?
-        // how many parent should make how many childs?
-        // -->Keeping balance between crossover and selection. If selection is very
-        // intense the population will converge very fast and there might not be
-        // enough time for good mixing to occur between members of the
-        // population.
-        // how many parents should we use? (just the tow bests or the 3 or 4 best (alienated evolution))
-        // parent A + parent B --> Crossover (random? 50%? Which fields?) --> Mutate (to which extend)
-        // next gen = parents + childs or just childs (overlapping EA or simple non-overlapping GA)
-        // see http://bt.pa.msu.edu/TM/BocaRaton2006/talks/poklonskiy.pdf for parameters
-        // see http://en.wikipedia.org/wiki/Test_functions_for_optimization for possible testcases
-	    
 	    try{
 
 	        //CREATE INITIAL POPULATION AND MEASURE FITNESS------------
@@ -70,7 +54,6 @@ public class player11 implements ContestSubmission {
 	                    mutation.mutate(child);
 	                    evaluateChild(child);
 	                    children.add(child);
-	                    
 	                }
 	                
 	            }
@@ -80,29 +63,9 @@ public class player11 implements ContestSubmission {
 	            int generation = population.increaseGeneration();
 	            System.out.println("Generation "+generation+" Result: "+getBestIndividual());
 	            
-	            // Select parents
-	            // Apply variation operators and get children
-	            //  double child[] = ...
-	            
-	            // objective function ---> the close to 10, the better
-	            // Double fitness = evaluation_.evaluate(child);
-	            // Select survivors
 	        }
 	        
 	        //------------------------------------------------------------
-	        
-	        // Run your algorithm here
-
-	        // Getting data from evaluation problem (depends on the specific
-	        // evaluation implementation)
-	        // E.g. getting a vector of numbers
-	        // Vector<Double> data =
-	        // (Vector<Doulbe>)evaluation_.getData("trainingset1");
-
-	        // Evaluating your results
-	        // E.g. evaluating a series of true/false predictions
-	        // boolean pred[] = ...
-	        // Double score = (Double)evaluation_.evaluate(pred);
 	    }catch(RuntimeException e){
 	        e.printStackTrace();
 	        System.out.println(e.getMessage());
@@ -122,39 +85,25 @@ public class player11 implements ContestSubmission {
 	    }
 	}
 	
-	public static Individual createAndEvaluateIndividual(double[] dna){
-	       Double fitness = (Double) evaluation.evaluate(dna);
-	        evals++;
-	        if( fitness == null ){
-	            throw new RuntimeException("Maximum evaluations were reached.");
-	        }
-	        
-	        return new Individual(dna, fitness, null);
-	    }
+	public static void evaluateInitialIndividual(Individual ind){
+	    evaluateIndividual(ind, 0);
+	}
+	
+	private static void evaluateChild(Individual ind){
+	    evaluateIndividual(ind, population.getGeneration()+1);
+	}
 	    
-    public static void evaluateChild(Individual ind) {
+    private static void evaluateIndividual(Individual ind, int generation) {
         Double fitness = (Double) evaluation.evaluate(ind.getDna());
+        //Double fitness = (Double) fitnessCalculation.calculateFitness(result);
         evals++;
         if( fitness == null ){
             throw new RuntimeException("Maximum evaluations were reached.");
         }
-        
+
         ind.setFitness(fitness);
-        ind.setGeneration(population.getGeneration() + 1);
+        ind.setGeneration(generation);
     }
-
-	
-	public static Individual createIndividual(double[] dna){
-	    Double value = (Double) evaluation.evaluate(dna);
-	    
-        if( value == null ){
-            throw new RuntimeException("Maximum evaluations were reached.");
-        }
-        evals++;
-
-        Double fitness = fitnessCalculation.calculateFitness(value);
-        return new Individual(dna, fitness, population.getGeneration()+1);
-	}
 	
 	/**
      * 
@@ -186,11 +135,19 @@ public class player11 implements ContestSubmission {
 		boolean HAS_STRUCTURE = Boolean.parseBoolean(props.getProperty("GlobalStructure"));
 		boolean IS_SEPERABLE = Boolean.parseBoolean(props.getProperty("Separable"));
 
+        initialPopulation = new InitialPopulationSimple();
+        mutation = new MutationSimple();
+        recombination = new RecombinationAverage();
+
 		// Change settings(?)
-		if (IS_MULTIMODAL) {
-			// Do sth
+		if (!IS_MULTIMODAL) {
+	        fitnessCalculation = new FitnessNonZeroLogarithmic();
+	        parentSelection = new ParentSelectionRouletteWheel();
+	        survivalSelection = new SurvivalSelectionRouletteWheelFitnessAndAgeBased();
 		} else {
-			// Do sth else
+	        fitnessCalculation = new FitnessSimple();
+			parentSelection = new ParentSelectionSimple();
+			survivalSelection = new SurvivalSelectionSimple();
 		}
 		
 		// Change settings(?)
@@ -207,14 +164,11 @@ public class player11 implements ContestSubmission {
             //Do sth else
         }
 
-        population = new Population();
-        fitnessCalculation = new DefaultFitness();
-        mutation = new UncorrelatedMutation();
-        recombination = new BlendCrossover(mutation);
+        recombination.setMutation(mutation);
         mutation.setRecombination(recombination);
-        initialPopulation = new DefaultInitialPopulation(mutation);
-        parentSelection = new RouletteWheelParentSelection();
-        survivalSelection = new FitnessAndAgeBasedSurvivalSelection();
+        initialPopulation.setMutation(mutation);
+        parentSelection.setFitnessCalculation(fitnessCalculation);
+        survivalSelection.setFitnessCalculation(fitnessCalculation);
 		
 	}
 

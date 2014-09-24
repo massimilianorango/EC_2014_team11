@@ -1,10 +1,12 @@
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class ScaledSurvivalSelection implements ISurvivalSelection {
+public class SurvivalSelectionScaled implements ISurvivalSelection {
 
     public static double S_INDIVIDUAL_ADVANTAGE = 2;
+    
     @Override
     public void selectSurvivals(Population population, ArrayList<Individual> children) {
         population.removeAllIndividuals();
@@ -22,7 +24,7 @@ public class ScaledSurvivalSelection implements ISurvivalSelection {
         }
         
         ArrayList<Integer> chosenChildren = new ArrayList<Integer>();
-        for(int i = 0; i<player11.MAX_POUPULATION_SIZE; i++){
+        for(int i = 0; i<player11.MAX_POPULATION_SIZE; i++){
             int randomIndex = player11.getProbabilityBasedRandomIndex(probabilityIntervals);
             if( chosenChildren.contains(randomIndex) ){
                 continue;
@@ -31,6 +33,12 @@ public class ScaledSurvivalSelection implements ISurvivalSelection {
             }
             population.addIndividual(children.get(randomIndex));
         }
+        
+    }
+
+    @Override
+    public void setFitnessCalculation(IFitnessCalculation fitness) {
+        // TODO Auto-generated method stub
         
     }
 

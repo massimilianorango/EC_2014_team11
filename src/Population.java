@@ -24,7 +24,7 @@ public class Population {
     }
     
     public void addIndividuals(ArrayList<Individual> individuals){
-        individuals.addAll(individuals);
+        this.individuals.addAll(individuals);
     }
     
     public void removeIndividual(Individual individual){

@@ -1,11 +1,17 @@
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
 
-public class FitnessAndAgeBasedSurvivalSelection implements ISurvivalSelection{
+public class SurvivalSelectionRouletteWheelFitnessAndAgeBased implements ISurvivalSelection{
 
     public static int MAXIMUM_AGE = 2;
+    private IFitnessCalculation fitness;
+    
+    public void setFitnessCalculation(IFitnessCalculation fitness){
+        this.fitness = fitness;
+    }
     
     public void selectSurvivals(Population population, ArrayList<Individual> children){
         Iterator<Individual> iter = population.getIndividuals().iterator();
@@ -33,7 +39,7 @@ public class FitnessAndAgeBasedSurvivalSelection implements ISurvivalSelection{
         
         
         //if population size is still smaller then maximum population size, then we can finish here
-        if( generationSurvivors.size() <= player11.MAX_POUPULATION_SIZE ){
+        if( generationSurvivors.size() <= player11.MAX_POPULATION_SIZE ){
             population.setIndividuals(generationSurvivors);
             return;
         }
@@ -42,13 +48,13 @@ public class FitnessAndAgeBasedSurvivalSelection implements ISurvivalSelection{
         double[] probabilityIntervals = new double[generationSurvivors.size()];
         double probabilitySum = 0.0;
         for(int i = 0; i<generationSurvivors.size(); i++){
-            probabilitySum += generationSurvivors.get(i).getFitness()/fitnessSum;
+            probabilitySum += fitness.recalculateFitness(generationSurvivors.get(i).getFitness())/fitnessSum;
             probabilityIntervals[i] = probabilitySum;
         }
         
         ArrayList<Individual> fitnessSurvivors = new ArrayList<Individual>();
         //choose survivors
-        while(fitnessSurvivors.size() < player11.MAX_POUPULATION_SIZE){
+        while(fitnessSurvivors.size() < player11.MAX_POPULATION_SIZE){
             int index = player11.getProbabilityBasedRandomIndex(probabilityIntervals);
             if( fitnessSurvivors.contains(generationSurvivors.get(index)) ){
                 continue;

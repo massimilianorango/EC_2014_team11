@@ -6,16 +6,15 @@ public class Individual implements Comparable<Individual>{
     private double[] sigma_mutation_step_sizes = null;
     private double[] alpha_correlation_parameters = null;
     private Double fitness = null;
-    private Integer generation = null;
+    private int generation = 0;
     
-    public Individual(double[] dna, Double fitness, Integer generation) {
+    public Individual(double[] dna) {
         super();
         this.dna = dna;
-        this.fitness = fitness;
-        this.generation = generation;
         sigma_mutation_step_sizes = new double[dna.length];
         alpha_correlation_parameters = new double[(dna.length*(dna.length-1))/2];
     }
+    
     @Override
     public String toString() {
         return "Individual [dna=" + Arrays.toString(dna) + ", fitness=" + fitness + "]";
@@ -33,10 +32,10 @@ public class Individual implements Comparable<Individual>{
         this.fitness = fitness;
     }
     
-    public Integer getGeneration() {
+    public int getGeneration() {
         return generation;
     }
-    public void setGeneration(Integer generation) {
+    public void setGeneration(int generation) {
         this.generation = generation;
     }
     

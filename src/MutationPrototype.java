@@ -1,6 +1,8 @@
 
 
-public class PrototypeMutation implements IMutation {
+
+
+public class MutationPrototype implements IMutation {
 
 
     @Override

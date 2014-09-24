@@ -1,12 +1,13 @@
+
 import java.util.ArrayList;
 
 
-public class BlendCrossover implements IRecombination {
+public class RecombinationBlendCrossover implements IRecombination {
 
     public static double APLPHA_CROSS_RATE = 0.5;
     private IMutation mutation;
     
-    public BlendCrossover(IMutation mutation){
+    public void setMutation(IMutation mutation){
         this.mutation = mutation;
     }
     
@@ -34,12 +35,7 @@ public class BlendCrossover implements IRecombination {
     }
 
     private Individual blendCross(Individual parentOne, Individual parentTwo){
-        double[] child_dna = new double[10];
-        for(int j = 0; j<10; j++){
-            crossOperator(parentOne.getDna(),parentTwo.getDna());
-        }
-
-        Individual child = new Individual(child_dna,null,null);
+        Individual child = new Individual(crossOperator(parentOne.getDna(),parentTwo.getDna()));
         mutation.crossoverMutationValues(child, parentOne, parentTwo);
         
         //create individual

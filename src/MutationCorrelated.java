@@ -1,4 +1,6 @@
 
+
+
 /**
  * 
  * Implementation of Covariance Matrix Adaption Evolution Strategy
@@ -6,7 +8,7 @@
  * @author tdoehmen
  *
  */
-public class CMAMutation implements IMutation {
+public class MutationCorrelated implements IMutation {
     
     public static double SIGMA_LOWER_BOUNDARY = 0.0;
 

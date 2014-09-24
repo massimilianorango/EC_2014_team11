@@ -1,13 +1,16 @@
 
 
-public class DefaultInitialPopulation implements IInitialPopulation {
+
+
+public class InitialPopulationSimple implements IInitialPopulation {
 
     public static int INITIAL_POPULATION_SIZE = 10;
     private IMutation mutation = null;
     
-    public DefaultInitialPopulation(IMutation mutation){
+    public void setMutation(IMutation mutation){
         this.mutation = mutation;
     }
+    
     @Override
     public Population createInitialPopulation() {
         Population population = new Population();
@@ -20,11 +23,10 @@ public class DefaultInitialPopulation implements IInitialPopulation {
             }
 
             
-            Individual ind = player11.createAndEvaluateIndividual(randomDna);
+            Individual ind = new Individual(randomDna);
+            player11.evaluateInitialIndividual(ind);
             mutation.intializeMutationParameters(ind);
-            ind.setGeneration(1);
             population.addIndividual(ind);
-
         }
         
         return population;

@@ -1,4 +1,6 @@
-public class UncorrelatedMutation implements IMutation {
+
+
+public class MutationUncorrelated implements IMutation {
 
     private static double TAU_1 = 1 / Math.sqrt(2*10);
     private static double TAU = 1 / Math.sqrt(2 * Math.sqrt(10));
