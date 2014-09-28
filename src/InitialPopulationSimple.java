@@ -4,7 +4,7 @@
 
 public class InitialPopulationSimple implements IInitialPopulation {
 
-    public static int INITIAL_POPULATION_SIZE = 10;
+    public static int INITIAL_POPULATION_SIZE = 15;
     private IMutation mutation = null;
     
     public void setMutation(IMutation mutation){

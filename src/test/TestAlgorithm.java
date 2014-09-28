@@ -20,7 +20,7 @@ public class TestAlgorithm {
         }
        
         localContestSubmission.setSeed(12);
-        localContestSubmission.setEvaluation(new SphereEvaluation());
+        localContestSubmission.setEvaluation(localContestEvaluation);
 
         Date localDate = new Date();
         long l3 = localDate.getTime();

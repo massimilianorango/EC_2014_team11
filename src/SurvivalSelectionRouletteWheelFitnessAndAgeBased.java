@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 public class SurvivalSelectionRouletteWheelFitnessAndAgeBased implements ISurvivalSelection{
 
-    public static int MAXIMUM_AGE = 2;
+    public static int MAXIMUM_AGE = 30;
     private IFitnessCalculation fitness;
     
     public void setFitnessCalculation(IFitnessCalculation fitness){
@@ -31,24 +31,27 @@ public class SurvivalSelectionRouletteWheelFitnessAndAgeBased implements ISurviv
         
         //sort by fitness levels
         Collections.sort(generationSurvivors);
-        //collect sum of all fitness levels
-        double fitnessSum = 0;
-        for(Individual individual : generationSurvivors){
-            fitnessSum += individual.getFitness();
-        }
-        
+        System.out.println(generationSurvivors.size());
         
         //if population size is still smaller then maximum population size, then we can finish here
         if( generationSurvivors.size() <= player11.MAX_POPULATION_SIZE ){
             population.setIndividuals(generationSurvivors);
             return;
         }
+
+        //collect sum of all fitness levels
+        double fitnessSum = 0;
+        double[] fitnessValues = new double[generationSurvivors.size()];
+        for(int i = 0; i < generationSurvivors.size(); i++){
+        	fitnessValues[i] = fitness.recalculateFitness(generationSurvivors.get(i).getFitness()); 
+            fitnessSum += fitnessValues[i];
+        }
         
         //setup probability intervals
         double[] probabilityIntervals = new double[generationSurvivors.size()];
         double probabilitySum = 0.0;
-        for(int i = 0; i<generationSurvivors.size(); i++){
-            probabilitySum += fitness.recalculateFitness(generationSurvivors.get(i).getFitness())/fitnessSum;
+        for(int i = 0; i < generationSurvivors.size(); i++){
+            probabilitySum += fitnessValues[i]/fitnessSum;
             probabilityIntervals[i] = probabilitySum;
         }
         

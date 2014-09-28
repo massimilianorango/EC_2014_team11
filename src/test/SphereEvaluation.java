@@ -43,9 +43,23 @@ public class SphereEvaluation implements ContestEvaluation
 	// The standard sphere function. It has one minimum at 0.
 	private double function(double[] x)
 	{	
-		double sum = 0;
-		for(int i=0; i<10; i++) sum += x[i]*x[i];
-		return sum;
+//		double sum = 0;
+//		for(int i=0; i<9; i++) {
+////			sum += Math.pow(x[i], 2); //Sphere function
+////			sum += Math.pow(x[i]+3, 2); //translated Sphere function
+//			sum += 100*Math.pow((x[i+1]-Math.pow(x[i], 2)), 2) + Math.pow(1-x[i], 2); //De Jong's function 2, change for i = 0 to 9 
+////			sum+=Math.pow(Math.abs(x[i]), i+1); //sum of different power function 9 
+//		}
+//		return sum;
+		
+		double sum1 = 0.0;
+        double sum2 = 0.0;
+        for (int i = 0 ; i < x.length ; i ++) {
+                sum1 += (x[i] * x[i]);
+                sum2 += (Math.cos(2*Math.PI*x[i]));
+        }
+        return (-20.0 * Math.exp(-0.2 * Math.sqrt(sum1 / ((double )x.length))) - 
+                        Math.exp(sum2 / ((double )x.length)) + 20.0 + Math.E);	
 	}
 	
 	@Override

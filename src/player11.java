@@ -9,9 +9,9 @@ import org.vu.contest.ContestSubmission;
 public class player11 implements ContestSubmission {
     
     public static int EVALUATIONS_LIMIT = Integer.MAX_VALUE;
-    public static int NUMBER_OF_PARENT_PAIRS = 1;
-    public static int NUMBER_OF_CHILDREN = 2;
-    public static int MAX_POPULATION_SIZE = 50;
+    public static int NUMBER_OF_PARENT_PAIRS = 200;
+    public static int NUMBER_OF_CHILDREN = 1;
+    public static int MAX_POPULATION_SIZE = 15;
     private static IFitnessCalculation fitnessCalculation = null;
     private static IInitialPopulation initialPopulation = null;
     private static IParentSelection parentSelection = null;
@@ -35,7 +35,7 @@ public class player11 implements ContestSubmission {
 	public void run() {
 	    try{
 
-	        //CREATE INITIAL POPULATION AND MEASURE FITNESS------------
+//	        //CREATE INITIAL POPULATION AND MEASURE FITNESS------------
 	        population = initialPopulation.createInitialPopulation();
 	        //----------------------------------------------------------
 	        
@@ -60,10 +60,14 @@ public class player11 implements ContestSubmission {
 	            
 	            survivalSelection.selectSurvivals(population,children);
 	            
-	            int generation = population.increaseGeneration();
-	            System.out.println("Generation "+generation+" Result: "+getBestIndividual());
+	            population.increaseGeneration();
+	            System.out.println("Generation " + population.getGeneration() + " Result: " + getBestIndividual());
 	            
 	        }
+	        
+//	        double[]x={-4,-4,-4,-4,-4,-4,-4,-4,-4,-4};
+//	        evaluation.evaluate(x);
+//	        evals++;
 	        
 	        //------------------------------------------------------------
 	    }catch(RuntimeException e){
@@ -86,7 +90,7 @@ public class player11 implements ContestSubmission {
 	}
 	
 	public static void evaluateInitialIndividual(Individual ind){
-	    evaluateIndividual(ind, 0);
+	    evaluateIndividual(ind, 1); //why 0?
 	}
 	
 	private static void evaluateChild(Individual ind){
@@ -132,23 +136,36 @@ public class player11 implements ContestSubmission {
 
         EVALUATIONS_LIMIT = Integer.parseInt(props.getProperty("Evaluations"));
 		boolean IS_MULTIMODAL = Boolean.parseBoolean(props.getProperty("Multimodal"));
-		boolean HAS_STRUCTURE = Boolean.parseBoolean(props.getProperty("GlobalStructure"));
+		boolean HAS_STRUCTURE = Boolean.parseBoolean(props.getProperty("Regular"));
 		boolean IS_SEPERABLE = Boolean.parseBoolean(props.getProperty("Separable"));
 
-        initialPopulation = new InitialPopulationSimple();
-        mutation = new MutationSimple();
-        recombination = new RecombinationAverage();
+//        initialPopulation = new InitialPopulationSimple();
+//        mutation = new MutationSimple();
+//        recombination = new RecombinationSimple();
+//        
+//        fitnessCalculation = new FitnessSimple();
+//		parentSelection = new ParentSelectionSimple();
+//		survivalSelection = new SurvivalSelectionSimple();
+		
+		
+		initialPopulation = new InitialPopulationSimple();
+        mutation = new MutationUncorrelated();
+        recombination = new RecombinationES();//RecombinationBlendCrossover();
+        
+        fitnessCalculation = new FitnessSimple();//FitnessNonZeroLogarithmic();
+        parentSelection = new ParentSelectionUniformRandom();//ParentSelectionRouletteWheel();
+        survivalSelection = new SurvivalSelectionMuCommaLambda();//SurvivalSelectionRouletteWheelFitnessAndAgeBased();
 
 		// Change settings(?)
-		if (!IS_MULTIMODAL) {
-	        fitnessCalculation = new FitnessNonZeroLogarithmic();
-	        parentSelection = new ParentSelectionRouletteWheel();
-	        survivalSelection = new SurvivalSelectionRouletteWheelFitnessAndAgeBased();
-		} else {
-	        fitnessCalculation = new FitnessSimple();
-			parentSelection = new ParentSelectionSimple();
-			survivalSelection = new SurvivalSelectionSimple();
-		}
+//		if (!IS_MULTIMODAL) {
+//	        fitnessCalculation = new FitnessNonZeroLogarithmic();
+//	        parentSelection = new ParentSelectionRouletteWheel();
+//	        survivalSelection = new SurvivalSelectionRouletteWheelFitnessAndAgeBased();
+//		} else {
+//	        fitnessCalculation = new FitnessSimple();
+//			parentSelection = new ParentSelectionSimple();
+//			survivalSelection = new SurvivalSelectionSimple();
+//		}
 		
 		// Change settings(?)
         if (IS_SEPERABLE) {

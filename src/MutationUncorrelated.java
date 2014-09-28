@@ -38,8 +38,8 @@ public class MutationUncorrelated implements IMutation {
             
             dna[i] = dna[i] + sigmas[i] * gaussian_1;
             //Curtailing values to [-5, 5[ if out of interval
-            if(dna[i] >= 5.0) {
-                dna[i] = 4.999999999;
+            if(dna[i] > 5.0) {
+                dna[i] = 5.0;
             } else if(dna[i] < -5.0) {
                 dna[i] = -5.0;
             }
@@ -53,10 +53,21 @@ public class MutationUncorrelated implements IMutation {
         //System.out.println("_________________________________________________");
     }
     
-    @Override
+//    @Override
+//    public void crossoverMutationValues(Individual crossedIndividual, Individual parentA,
+//            Individual parentB) {
+//        double[] child_sigma = recombination.crossOperator(parentA.getSigma_mutation_step_sizes(), parentB.getSigma_mutation_step_sizes());      
+//        crossedIndividual.setSigma_mutation_step_sizes(child_sigma);
+//    }
+    
     public void crossoverMutationValues(Individual crossedIndividual, Individual parentA,
             Individual parentB) {
-        double[] child_sigma = recombination.crossOperator(parentA.getSigma_mutation_step_sizes(), parentB.getSigma_mutation_step_sizes());      
+        double[] child_sigma = new double[10];
+        double[] sigmasA = parentA.getSigma_mutation_step_sizes();
+        double[] sigmasB = parentB.getSigma_mutation_step_sizes();
+        for(int i = 0; i < 10; i++) {
+        	child_sigma[i] = (sigmasA[i] + sigmasB[i])/2;
+        }
         crossedIndividual.setSigma_mutation_step_sizes(child_sigma);
     }
 

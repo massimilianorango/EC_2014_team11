@@ -5,7 +5,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ParentSelectionSimple implements IParentSelection{
 
-    public static int NUMBER_OF_ELITE = 4;
+    public static int NUMBER_OF_ELITE = 2 * player11.NUMBER_OF_PARENT_PAIRS + 4; //at least the number of total parents to choose
     private CopyOnWriteArrayList<Individual> elite = null;
     
     @Override
