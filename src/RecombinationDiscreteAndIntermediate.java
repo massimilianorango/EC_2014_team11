@@ -6,11 +6,11 @@ import java.util.ArrayList;
  * 
  * @author max
  */
-public class RecombinationES implements IRecombination {
+public class RecombinationDiscreteAndIntermediate implements IRecombination {
 
 	private ArrayList<Individual> population; // should be used
 
-	public RecombinationES(ArrayList<Individual> population) {
+	public RecombinationDiscreteAndIntermediate(ArrayList<Individual> population) {
 		this.population = population;
 	}
 

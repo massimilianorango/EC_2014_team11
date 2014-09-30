@@ -15,7 +15,7 @@ public class AlgorithmES extends AbstractEA {
 		initialPopulation = new InitialPopulationSimple(MU);
 		population = initialPopulation.createInitialPopulation();
 		parentSelection = new ParentSelectionUniformRandom();
-		recombination = new RecombinationES(population.getIndividuals());
+		recombination = new RecombinationDiscreteAndIntermediate(population.getIndividuals());
 		mutation = new MutationUncorrelated();
 		survivalSelection = new SurvivalSelectionMuCommaLambda(MU);
 	}
