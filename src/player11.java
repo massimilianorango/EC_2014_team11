@@ -1,198 +1,82 @@
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Properties;
 import java.util.Random;
 
 import org.vu.contest.ContestEvaluation;
 import org.vu.contest.ContestSubmission;
 
+/**
+ * Sets the run environment and chooses the right IAlgorithm to be run. Contains utility methods shared between many classes.
+ */
 public class player11 implements ContestSubmission {
-    
-    public static int EVALUATIONS_LIMIT = Integer.MAX_VALUE;
-    public static int NUMBER_OF_PARENT_PAIRS = 200;
-    public static int NUMBER_OF_CHILDREN = 1;
-    public static int MAX_POPULATION_SIZE = 15;
-    private static IFitnessCalculation fitnessCalculation = null;
-    private static IInitialPopulation initialPopulation = null;
-    private static IParentSelection parentSelection = null;
-    private static IRecombination recombination = null;
-    private static IMutation mutation = null;
-    private static ISurvivalSelection survivalSelection = null;
-    
-	public static Random rnd;
-	public static ContestEvaluation evaluation;
-	private static Population population = null;
-	private static int evals;
 
-	public static void main(String[] args){
-	}
-	
+	public static final int F_DIMENSION = 10; // dimension of each function
+	public static final int MIN_SEARCH_VALUE = -5; // min x value
+	public static final int MAX_SEARCH_VALUE = 5; // max x value
+
+	private static Random rnd;
+	private AbstractEA algorithm;
+
 	public player11() {
 		rnd = new Random();
 	}
 
 	@Override
-	public void run() {
-	    try{
+	public void setSeed(long seed) {
+		rnd.setSeed(seed);
+	}
 
-//	        //CREATE INITIAL POPULATION AND MEASURE FITNESS------------
-	        population = initialPopulation.createInitialPopulation();
-	        //----------------------------------------------------------
-	        
-	        
-	        //RUN EVOLUTION ON INITIAL POPULATION-----------------------
-	        while(evals < EVALUATIONS_LIMIT){
-	            
-	            //TODO: avoid that same parent is chosen in different parent pairs?
-	            ArrayList<Individual> children = new ArrayList<Individual>();
-	            parentSelection.prepareSelection(population);
-	            for(int i = 0; i< NUMBER_OF_PARENT_PAIRS; i++){
-	                Individual[] parents = parentSelection.selectParents(population);
-	            
-	                ArrayList<Individual> unmutated_children = recombination.crossover(parents, NUMBER_OF_CHILDREN);
-	                for(Individual child: unmutated_children){
-	                    mutation.mutate(child);
-	                    evaluateChild(child);
-	                    children.add(child);
-	                }
-	                
-	            }
-	            
-	            survivalSelection.selectSurvivals(population,children);
-	            
-	            population.increaseGeneration();
-	            System.out.println("Generation " + population.getGeneration() + " Result: " + getBestIndividual());
-	            
-	        }
-	        
-//	        double[]x={-4,-4,-4,-4,-4,-4,-4,-4,-4,-4};
-//	        evaluation.evaluate(x);
-//	        evals++;
-	        
-	        //------------------------------------------------------------
-	    }catch(RuntimeException e){
-	        e.printStackTrace();
-	        System.out.println(e.getMessage());
-	    }
-	    
-        return;
-	}
-	
-	public Individual getBestIndividual(){
-	    @SuppressWarnings("unchecked")
-        ArrayList<Individual> individuals = (ArrayList<Individual>) population.getIndividuals().clone();
-	    Collections.sort(individuals);
-	    if( individuals.size() > 0 ){
-	        return individuals.get(individuals.size()-1);
-	    }else{
-	        return null;
-	    }
-	}
-	
-	public static void evaluateInitialIndividual(Individual ind){
-	    evaluateIndividual(ind, 1); //why 0?
-	}
-	
-	private static void evaluateChild(Individual ind){
-	    evaluateIndividual(ind, population.getGeneration()+1);
-	}
-	    
-    private static void evaluateIndividual(Individual ind, int generation) {
-        Double fitness = (Double) evaluation.evaluate(ind.getDna());
-        //Double fitness = (Double) fitnessCalculation.calculateFitness(result);
-        evals++;
-        if( fitness == null ){
-            throw new RuntimeException("Maximum evaluations were reached.");
-        }
-
-        ind.setFitness(fitness);
-        ind.setGeneration(generation);
-    }
-	
-	/**
-     * 
-     * @param intervals probability list like [0.1][0.15][0.21][0.32]..[1]
-     * @return returns list index of the first value which is higher than the given one, returns
-     */
-	public static int getProbabilityBasedRandomIndex(double[] intervals){
-	    Double random = player11.rnd.nextDouble();
-        for(int i = 0; i<intervals.length; i++){
-            if( intervals[i] > random ){
-                // found parent in range e.g if random=0.2 -> [0.1][0.15][x][0.32]..[1]
-                return i;
-            }
-        }
-        
-        throw new RuntimeException("Random number i=[0-1[ was not inside the given interval.");
+	public static Random getRnd() {
+		return rnd;
 	}
 
 	@Override
 	public void setEvaluation(ContestEvaluation evaluation) {
-		// Set evaluation problem used in the run
-	    player11.evaluation = evaluation;
 
 		// Get evaluation properties
 		Properties props = evaluation.getProperties();
+		int evaluationsLimit = Integer.parseInt(props.getProperty("Evaluations"));
+		boolean isMultimodal = Boolean.parseBoolean(props.getProperty("Multimodal"));
+		boolean isRegular = Boolean.parseBoolean(props.getProperty("Regular"));
+		boolean isSeparable = Boolean.parseBoolean(props.getProperty("Separable"));
 
-        EVALUATIONS_LIMIT = Integer.parseInt(props.getProperty("Evaluations"));
-		boolean IS_MULTIMODAL = Boolean.parseBoolean(props.getProperty("Multimodal"));
-		boolean HAS_STRUCTURE = Boolean.parseBoolean(props.getProperty("Regular"));
-		boolean IS_SEPERABLE = Boolean.parseBoolean(props.getProperty("Separable"));
+		if (!isMultimodal && isSeparable && !isRegular) {
+			algorithm = new AlgorithmES(); // something simpler should be better as it is not multimodal -> AlgorithmSimple()
+		} else if (isMultimodal && !isSeparable && !isRegular) {
+			algorithm = new AlgorithmES(); // probably a function with randomly distributed (and high) local optima
+		} else { // if(isMultimodal && !isSeparable && isRegular){
+			algorithm = new AlgorithmES(); // something like 'Ackley's function' -> ES should be ok but needs improvement
+		}
+		algorithm.setEvaluation(evaluation, evaluationsLimit);
 
-//        initialPopulation = new InitialPopulationSimple();
-//        mutation = new MutationSimple();
-//        recombination = new RecombinationSimple();
-//        
-//        fitnessCalculation = new FitnessSimple();
-//		parentSelection = new ParentSelectionSimple();
-//		survivalSelection = new SurvivalSelectionSimple();
-		
-		
-		initialPopulation = new InitialPopulationSimple();
-        mutation = new MutationUncorrelated();
-        recombination = new RecombinationES();//RecombinationBlendCrossover();
-        
-        fitnessCalculation = new FitnessSimple();//FitnessNonZeroLogarithmic();
-        parentSelection = new ParentSelectionUniformRandom();//ParentSelectionRouletteWheel();
-        survivalSelection = new SurvivalSelectionMuCommaLambda();//SurvivalSelectionRouletteWheelFitnessAndAgeBased();
-
-		// Change settings(?)
-//		if (!IS_MULTIMODAL) {
-//	        fitnessCalculation = new FitnessNonZeroLogarithmic();
-//	        parentSelection = new ParentSelectionRouletteWheel();
-//	        survivalSelection = new SurvivalSelectionRouletteWheelFitnessAndAgeBased();
-//		} else {
-//	        fitnessCalculation = new FitnessSimple();
-//			parentSelection = new ParentSelectionSimple();
-//			survivalSelection = new SurvivalSelectionSimple();
-//		}
-		
-		// Change settings(?)
-        if (IS_SEPERABLE) {
-            // Do sth
-        } else {
-            //solve using CMA Mutation
-        }
-        
-        // Change settings(?)
-        if (HAS_STRUCTURE) {
-            // Do sth
-        } else {
-            //Do sth else
-        }
-
-        recombination.setMutation(mutation);
-        mutation.setRecombination(recombination);
-        initialPopulation.setMutation(mutation);
-        parentSelection.setFitnessCalculation(fitnessCalculation);
-        survivalSelection.setFitnessCalculation(fitnessCalculation);
-		
 	}
 
 	@Override
-	public void setSeed(long seed) {
-		// Set seed of algortihms random process
-		rnd.setSeed(seed);
+	public void run() {
+		try {
+			algorithm.run();
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * @param intervals
+	 *            probability list like [0.1][0.15][0.21][0.32]..[1]
+	 * @return returns list index of the first value which is higher than the given one
+	 */
+	public static int getProbabilityBasedRandomIndex(double[] intervals) {
+		Double random = rnd.nextDouble();
+		for (int i = 0; i < intervals.length; i++) {
+			if (intervals[i] > random) {
+				// found parent in range e.g if random = 0.2 -> [0.1][0.15][x][0.32]..[1]
+				return i;
+			}
+		}
+		throw new RuntimeException("Random number i=[0-1[ was not inside the given interval.");
+	}
+
+	public static void main(String[] args) {
 	}
 
 }

@@ -1,39 +1,52 @@
 import java.util.ArrayList;
 
-
+/**
+ * Performs recombination using local discrete recombination for DNA and global intermediate recombination for sigma
+ * values (p. 80, 81 book).
+ * 
+ * @author max
+ */
 public class RecombinationES implements IRecombination {
 
-	private IMutation mutation;
+	private ArrayList<Individual> population; // should be used
+
+	public RecombinationES(ArrayList<Individual> population) {
+		this.population = population;
+	}
+
+	private double[] dnaCrossover(Individual[] parents) {
+		// local discrete recombination
+		double[] child_dna = new double[player11.F_DIMENSION];
+		for (int j = 0; j < child_dna.length; j++) {
+			child_dna[j] = parents[player11.getRnd().nextInt(parents.length)].getDna()[j];
+		}
+		return child_dna;
+	}
+
+	// TODO: should be global intermediate recombination and use this.population (now it's local)
+	private double[] sigmaCrossover(Individual[] parents) {
+		double[] child_sigma = new double[player11.F_DIMENSION];
+		Individual parentA = parents[0];// population.remove(player11.getRnd().nextInt(population.size()));
+		Individual parentB = parents[1];// population.remove(player11.getRnd().nextInt(population.size()));
+		for (int i = 0; i < child_sigma.length; i++) {
+			// average of 2 random parents
+			child_sigma[i] = (parentA.getSigma_mutation_step_sizes()[i] + parentB.getSigma_mutation_step_sizes()[i]) / 2;
+		}
+		// population.add(parentA);
+		// population.add(parentB);
+		return child_sigma;
+	}
 
 	@Override
-	public ArrayList<Individual> crossover(Individual[] parents, int number_of_childs) {
+	public ArrayList<Individual> crossover(Individual[] parents, int number_of_children) {
 		ArrayList<Individual> individuals = new ArrayList<Individual>();
-        for(int i = 0; i<number_of_childs; i++){
-            Individual child = new Individual(crossOperator(parents[0].getDna(), parents[1].getDna()));
-            mutation.crossoverMutationValues(child, parents[0], parents[1]);
-            individuals.add(child);
-        }
-        
-        return individuals;
-	}
+		for (int i = 0; i < number_of_children; i++) {
+			Individual child = new Individual(dnaCrossover(parents));
+			child.setSigma_mutation_step_sizes(sigmaCrossover(parents));
+			individuals.add(child);
+		}
 
-	@Override
-	public double[] crossOperator(double[] a, double[] b) {
-		double[] child_dna = new double[10];
-        for(int j = 0; j<10; j++){
-        	if(player11.rnd.nextInt(2) == 0) {
-        		child_dna[j] = a[j];  
-        	} else {
-        		child_dna[j] = b[j];
-        	}
-        }
-        
-        return child_dna;
-	}
-
-	@Override
-	public void setMutation(IMutation mutation) {
-		this.mutation = mutation;
+		return individuals;
 	}
 
 }

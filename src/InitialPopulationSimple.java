@@ -1,35 +1,41 @@
-
-
-
-
+/**
+ * Create a population made of random-valued individuals in the range specified.
+ * 
+ * @author max
+ *
+ */
 public class InitialPopulationSimple implements IInitialPopulation {
 
-    public static int INITIAL_POPULATION_SIZE = 15;
-    private IMutation mutation = null;
-    
-    public void setMutation(IMutation mutation){
-        this.mutation = mutation;
-    }
-    
-    @Override
-    public Population createInitialPopulation() {
-        Population population = new Population();
-        
-        while(population.getIndividuals().size() < INITIAL_POPULATION_SIZE){
-            double[] randomDna = new double[10];
-            for(int i = 0; i<10; i++){
-                //bounds are [-5.0,5.0[
-                randomDna[i] = player11.rnd.nextDouble()*10.0 - 5.0;
-            }
+	private static final double INITIAL_MUTATION_VALUE = 0.8;
+	private int populationSize;
 
-            
-            Individual ind = new Individual(randomDna);
-            player11.evaluateInitialIndividual(ind);
-            mutation.intializeMutationParameters(ind);
-            population.addIndividual(ind);
-        }
-        
-        return population;
-    }
+	public InitialPopulationSimple(int populationSize) {
+		this.populationSize = populationSize;
+	}
+
+	@Override
+	public Population createInitialPopulation() {
+		Population population = new Population();
+
+		while (population.getPopulationSize() < populationSize) {
+			double[] randomDna = new double[player11.F_DIMENSION];
+			for (int i = 0; i < randomDna.length; i++) {
+				// bounds are [-5.0,5.0[
+				randomDna[i] = (player11.getRnd().nextDouble() * player11.F_DIMENSION) - player11.MAX_SEARCH_VALUE;
+			}
+
+			Individual ind = new Individual(randomDna);
+
+			double[] sigmas = new double[player11.F_DIMENSION];
+			for (int i = 0; i < sigmas.length; i++) {
+				sigmas[i] = INITIAL_MUTATION_VALUE;
+			}
+
+			ind.setSigma_mutation_step_sizes(sigmas);
+			population.addIndividual(ind);
+		}
+
+		return population;
+	}
 
 }
