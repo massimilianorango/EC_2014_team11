@@ -1,6 +1,7 @@
 package test;
 
 import java.util.Properties;
+
 import org.vu.contest.ContestEvaluation;
 
 // This is an example evalation. It is based on the standard sphere function. It is a maximization problem with a maximum of 10 for 
@@ -10,27 +11,27 @@ import org.vu.contest.ContestEvaluation;
 // Base performance is calculated as the distance of the expected fitness of a random search (with the same amount of available
 //	evaluations) on the sphere function to the function minimum, thus Base = E[f_best_random] - ftarget. Fitness is scaled
 //	according to this base, thus Fitness = 10 - 10*(f-fbest)/Base
-public class SphereEvaluation implements ContestEvaluation {
+public class SphereEvaluation extends TuningEvaluation {
 	// Evaluations budget
-	private final static int EVALS_LIMIT_ = 10000;
+	private int EVALS_LIMIT_;
 	// The base performance. It is derived by doing random search on the sphere function (see function method) with the same
 	// amount of evaluations
 	private final static double BASE_ = 11.5356;
 	// The minimum of the sphere function
 	private final static double ftarget_ = 0;
 
-	// Best fitness so far
-	private double best_;
-	// Evaluations used so far
-	private int evaluations_;
-
 	// Properties of the evaluation
 	private String multimodal_ = "false";
 	private String regular_ = "true";
 	private String separable_ = "true";
-	private String evals_ = Integer.toString(EVALS_LIMIT_);
+	private String evals_;
 
-	public SphereEvaluation() {
+	public SphereEvaluation(){
+	    this(10000);
+	}
+	public SphereEvaluation(int EVALS_LIMIT_) {
+	    this.EVALS_LIMIT_ = EVALS_LIMIT_;
+	    evals_ = Integer.toString(EVALS_LIMIT_);
 		best_ = 0;
 		evaluations_ = 0;
 	}

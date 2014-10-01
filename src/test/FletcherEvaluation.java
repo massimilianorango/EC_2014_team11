@@ -7,23 +7,27 @@ import org.vu.contest.ContestEvaluation;
 
 import java.lang.Math;
 
-public class FletcherEvaluation implements ContestEvaluation {
+public class FletcherEvaluation extends TuningEvaluation {
 
-	private final static int EVALS_LIMIT_ = 2000000;
-	private double best_;
-	private int evaluations_;
+	private int EVALS_LIMIT_;
 
 	private String multimodal_ = "true";
 	private String regular_ = "false";
 	private String separable_ = "false";
-	private String evals_ = Integer.toString(EVALS_LIMIT_);
+	private String evals_;
 	private Random rnd_;
 	double[] alpha_;
 	int[][] a_;
 	int[][] b_;
 
-	public FletcherEvaluation() {
-		best_ = 0;
+	public FletcherEvaluation(){
+	    this(10000);
+	}
+	
+	public FletcherEvaluation(int EVALS_LIMIT_) {
+	    this.EVALS_LIMIT_ = EVALS_LIMIT_;
+	    evals_ = Integer.toString(EVALS_LIMIT_);
+		best_ = Integer.MIN_VALUE;
 		evaluations_ = 0;
 		rnd_ = new Random();
 		rnd_.setSeed(2);
