@@ -8,20 +8,45 @@ import java.util.ArrayList;
  */
 public class AlgorithmES extends AbstractEA {
 
-	private final static int MU = 15; // number of individuals in each generation (parent population, p.81 book)
-	private final static int LAMBDA = 100; // number of offspring to be generated in each generation
+	private int MU; // number of individuals in each generation (parent population, p.81 book)
+	private int LAMBDA; // number of offspring to be generated in each generation
+	protected RecombinationDiscreteAndIntermediate recombination; // how to recombine parents
 
-	public AlgorithmES() {
-		initialPopulation = new InitialPopulationSimple(MU);
-		population = initialPopulation.createInitialPopulation();
-		parentSelection = new ParentSelectionUniformRandom();
-		recombination = new RecombinationDiscreteAndIntermediate(population.getIndividuals());
-		mutation = new MutationUncorrelated();
-		survivalSelection = new SurvivalSelectionMuCommaLambda(MU);
+	public AlgorithmES(){
+	    this(15);
+	}
+	
+	public AlgorithmES(int MU) {
+        this(MU,100, new MutationUncorrelated());
+    }
+	
+	public AlgorithmES(int MU, int LAMBDA) {
+        this(MU,LAMBDA, new MutationUncorrelated());
+    }
+	
+	public AlgorithmES(int MU, int LAMBDA, double ALPHA) {
+        this(MU,LAMBDA, new MutationUncorrelated(ALPHA));
+    }
+	
+	public AlgorithmES(int MU, int LAMBDA, double ALPHA, double EPSILON) {
+	    this(MU,LAMBDA, new MutationUncorrelated(ALPHA, EPSILON));
+	}
+	
+	public AlgorithmES(int MU, int LAMBDA, IMutation mutation){
+	    this.MU = MU;
+	    this.LAMBDA = LAMBDA;
+        initialPopulation = new InitialPopulationSimple(MU);
+        parentSelection = new ParentSelectionSigmaScaled();
+        recombination = new RecombinationDiscreteAndIntermediate();
+        this.mutation = mutation;
+        survivalSelection = new SurvivalSelectionMuCommaLambda(MU);
 	}
 
 	@Override
 	public void run() {
+        population = initialPopulation.createInitialPopulation();
+        recombination.setPopulation(population.getIndividuals());
+        
 		for (Individual ind : population.getIndividuals()) {
 			evaluateInitialIndividual(ind);
 		}

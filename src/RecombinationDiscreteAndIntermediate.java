@@ -8,10 +8,10 @@ import java.util.ArrayList;
  */
 public class RecombinationDiscreteAndIntermediate implements IRecombination {
 
-	private ArrayList<Individual> population; // should be used
+	private ArrayList<Individual> population = null; // should be used
 
-	public RecombinationDiscreteAndIntermediate(ArrayList<Individual> population) {
-		this.population = population;
+	public void setPopulation(ArrayList<Individual> population){
+	       this.population = population;
 	}
 
 	private double[] dnaCrossover(Individual[] parents) {

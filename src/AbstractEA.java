@@ -42,6 +42,10 @@ public abstract class AbstractEA {
 		ind.setFitness(fitness);
 		ind.setGeneration(generation);
 	}
+	
+	public void resetEvals(){
+	    evals = 0;
+	}
 
 	public abstract void run();
 

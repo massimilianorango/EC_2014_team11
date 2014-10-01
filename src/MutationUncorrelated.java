@@ -6,10 +6,26 @@
  */
 public class MutationUncorrelated implements IMutation {
 
-	private static final double TAU_1 = 1 / Math.sqrt(2 * 10);
-	private static final double TAU = 1 / Math.sqrt(2 * Math.sqrt(10));
-	private static final double EPSILON = 0.000001;
+    private double ALPHA;
+	private double TAU_1;
+	private double TAU;
+	private double EPSILON;
 
+	public MutationUncorrelated(){
+	    this(1.0);
+	}
+	
+	public MutationUncorrelated(double ALPHA){
+        this(ALPHA,0.000001);
+    }
+	
+	public MutationUncorrelated(double ALPHA, double EPSILON){
+	    this.ALPHA = ALPHA;
+	    TAU_1 = ALPHA / Math.sqrt(2 * 10);
+	    TAU = ALPHA / Math.sqrt(2 * Math.sqrt(10));
+	    this.EPSILON = EPSILON;
+	}
+	
 	@Override
 	public void mutate(Individual individual) {
 

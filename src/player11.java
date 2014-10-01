@@ -40,14 +40,18 @@ public class player11 implements ContestSubmission {
 		boolean isSeparable = Boolean.parseBoolean(props.getProperty("Separable"));
 
 		if (!isMultimodal && isSeparable && !isRegular) {
-			algorithm = new AlgorithmES(); // something simpler should be better as it is not multimodal -> AlgorithmSimple()
+			algorithm = new AlgorithmES(7,22,1,0.000001); // something simpler should be better as it is not multimodal -> AlgorithmSimple()
 		} else if (isMultimodal && !isSeparable && !isRegular) {
-			algorithm = new AlgorithmES(); // probably a function with randomly distributed (and high) local optima
+			algorithm = new AlgorithmES(4,32,1,0.000001); // probably a function with randomly distributed (and high) local optima
 		} else { // if(isMultimodal && !isSeparable && isRegular){
-			algorithm = new AlgorithmES(); // something like 'Ackley's function' -> ES should be ok but needs improvement
+			algorithm = new AlgorithmES(5,44,1,0.000001); // something like 'Ackley's function' -> ES should be ok but needs improvement
 		}
 		algorithm.setEvaluation(evaluation, evaluationsLimit);
 
+	}
+	
+	public void setTuningAlgorithm(AbstractEA algorithm){
+	    this.algorithm = algorithm;
 	}
 
 	@Override
@@ -55,8 +59,10 @@ public class player11 implements ContestSubmission {
 		try {
 			algorithm.run();
 		} catch (RuntimeException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
+		    if(e.getMessage()!="Maximum evaluations were reached."){
+	            e.printStackTrace();
+	            System.out.println(e.getMessage());
+		    }
 		}
 	}
 
