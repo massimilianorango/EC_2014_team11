@@ -36,7 +36,7 @@ public class AlgorithmES extends AbstractEA {
 	    this.MU = MU;
 	    this.LAMBDA = LAMBDA;
         initialPopulation = new InitialPopulationSimple(MU);
-        parentSelection = new ParentSelectionSigmaScaled();
+        parentSelection = new ParentSelectionUniformRandom();
         recombination = new RecombinationDiscreteAndIntermediate();
         this.mutation = mutation;
         survivalSelection = new SurvivalSelectionMuCommaLambda(MU);
