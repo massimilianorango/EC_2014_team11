@@ -40,11 +40,11 @@ public class player11 implements ContestSubmission {
 		boolean isSeparable = Boolean.parseBoolean(props.getProperty("Separable"));
 
 		if (!isMultimodal && isSeparable && !isRegular) {
-			algorithm = new AlgorithmES(5,35,1,0.000001); // something simpler should be better as it is not multimodal -> AlgorithmSimple()
+			algorithm = new AlgorithmES(15,100,1); // something simpler should be better as it is not multimodal -> AlgorithmSimple()
 		} else if (isMultimodal && !isSeparable && !isRegular) {
-			algorithm = new AlgorithmES(5,35,1,0.000001); // probably a function with randomly distributed (and high) local optima
+			algorithm = new AlgorithmESAdvanced(15,200,1); // probably a function with randomly distributed (and high) local optima
 		} else { // if(isMultimodal && !isSeparable && isRegular){
-			algorithm = new AlgorithmES(5,35,1,0.000001); // something like 'Ackley's function' -> ES should be ok but needs improvement
+			algorithm = new AlgorithmESAdvanced(15,100,1); // something like 'Ackley's function' -> ES should be ok but needs improvement
 		}
 		algorithm.setEvaluation(evaluation, evaluationsLimit);
 
@@ -66,6 +66,26 @@ public class player11 implements ContestSubmission {
 		}
 	}
 
+	public static int getValueBasedRandomIndex(double[] values){
+	    double sum = 0.0;
+	    for(int i = 0; i< values.length; i++){
+	        sum += values[i];
+	    }
+	    
+	    for(int i = 0; i< values.length; i++){
+	        values[i] = values[i]/sum;
+	    }
+	    
+	    double[] probability_array = new double[values.length];
+	    double probability_sum = 0.0;
+	    for(int i = 0; i<values.length; i++){
+	        probability_sum += values[i];
+	        probability_array[i] = probability_sum;
+	    }
+	    
+	    return getProbabilityBasedRandomIndex(probability_array);
+	}
+	
 	/**
 	 * @param intervals
 	 *            probability list like [0.1][0.15][0.21][0.32]..[1]

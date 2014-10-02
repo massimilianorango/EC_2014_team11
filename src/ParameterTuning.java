@@ -55,7 +55,7 @@ public class ParameterTuning {
         System.out.println("Fletcher: ");
         printResults(best_results[3]);*/
         
-        double average_result = runEvaluation(new AckleyEvaluation(NUMBER_OF_EVALS), new AlgorithmES(7,22,1,0.000001), NUMBER_OF_RUNS);
+        double average_result = runEvaluation(new AckleyEvaluation(NUMBER_OF_EVALS), new AlgorithmESAdvanced(15,100,1), NUMBER_OF_RUNS);
         System.out.println(average_result);
     }
     

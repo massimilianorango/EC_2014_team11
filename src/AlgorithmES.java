@@ -7,6 +7,7 @@ import java.util.ArrayList;
  *
  */
 public class AlgorithmES extends AbstractEA {
+    protected Population population;
 
 	private int MU; // number of individuals in each generation (parent population, p.81 book)
 	private int LAMBDA; // number of offspring to be generated in each generation
@@ -52,11 +53,11 @@ public class AlgorithmES extends AbstractEA {
 		}
 		while (getEvals() < evaluationsLimit) {
 			ArrayList<Individual> children = new ArrayList<Individual>();
-			for (int i = 0; i < LAMBDA * 2; i++) { // TODO: fix: should be only LAMBDA
+			for (int i = 0; i < LAMBDA; i++) { // TODO: fix: should be only LAMBDA
 				Individual[] couple = parentSelection.selectParents(population, 2);
 				Individual child = recombination.crossover(couple, 1).get(0);
 				mutation.mutate(child);
-				evaluateChild(child);
+				evaluateIndividual(child, population.getGeneration()+1);
 				children.add(child);
 			}
 			survivalSelection.selectSurvivals(population, children);

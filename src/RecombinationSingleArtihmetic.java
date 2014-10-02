@@ -1,18 +1,36 @@
 import java.util.ArrayList;
 
 
-public class RecombinationSingleArtihmetic implements IRecombination{
+public class RecombinationSingleArtihmetic extends IRecombination{
     
-    public static double ALLELS = 1;
-    public static double ALPHA = 0.5;
+    public int K;
+    public double ALPHA;
+    
+    public RecombinationSingleArtihmetic(){
+        this(0.5);
+    }
+    
+    public RecombinationSingleArtihmetic(double ALPHA_RECOMBINATION){
+        this.ALPHA = ALPHA_RECOMBINATION;
+    }
+    
+    public void setK(int K){
+        this.K = K;
+    }
+    
+    public int getK(){
+        return K;
+    }
 
     @Override
     public ArrayList<Individual> crossover(Individual[] parents, int number_of_childs) {
         ArrayList<Individual> individuals = new ArrayList<Individual>();
         
         while(individuals.size() < number_of_childs){
-            individuals.add(new Individual(crossOperator(parents[0].getDna(),parents[1].getDna())));
-            individuals.add(new Individual(crossOperator(parents[1].getDna(),parents[0].getDna())));
+            double[] child_dna = crossOperator(parents[0].getDna(),parents[1].getDna());
+            Individual individual = new Individual(child_dna);
+            individual.setSigma_mutation_step_sizes(sigmaCrossover(parents));
+            individuals.add(individual);
         }
         
         return individuals;
@@ -20,21 +38,9 @@ public class RecombinationSingleArtihmetic implements IRecombination{
 
     public double[] crossOperator(double[] a, double[] b) {
         double[] child_dna = new double[10];
-        ArrayList<Integer> chosen = new ArrayList<Integer>();
-        while(chosen.size()<ALLELS && chosen.size() < 10){
-            int rand = 0;
-            do{
-                rand = player11.getRnd().nextInt(10);
-            }while(chosen.contains(rand));
-            chosen.add(rand);
-        }
-        
-        for(int i=0; i<10; i++){
-            child_dna[i] = a[i];
-            if( chosen.contains(i) ){
-               child_dna[i] = (ALPHA*a[i])+((1-ALPHA)*+b[i]);
-            }
-        }
+
+        K = player11.getRnd().nextInt(10);
+        child_dna[K] = (ALPHA*a[K])+((1-ALPHA)*+b[K]);
         
         return child_dna;
     }

@@ -4,7 +4,7 @@ public class Individual implements Comparable<Individual> {
 
 	private double[] dna;
 	private double[] sigma_mutation_step_sizes;
-	private double[] alpha_correlation_parameters;
+	private double[] recombination_operators;
 	private Double fitness;
 	private int generation;
 
@@ -12,7 +12,7 @@ public class Individual implements Comparable<Individual> {
 		super();
 		this.dna = dna;
 		sigma_mutation_step_sizes = new double[dna.length];
-		alpha_correlation_parameters = new double[(dna.length * (dna.length - 1)) / 2];
+		recombination_operators = new double[2];
 	}
 
 	@Override
@@ -52,12 +52,12 @@ public class Individual implements Comparable<Individual> {
 		this.sigma_mutation_step_sizes = sigma_mutation_step_sizes;
 	}
 
-	public double[] getAlpha_correlation_parameters() {
-		return alpha_correlation_parameters;
+	public double[] getRecombination_parameters() {
+		return recombination_operators;
 	}
 
-	public void setAlpha_correlation_parameters(double[] alpha_correlation_parameters) {
-		this.alpha_correlation_parameters = alpha_correlation_parameters;
+	public void setRecombination_parameters(double[] recombination_operators) {
+		this.recombination_operators = recombination_operators;
 	}
 
 	@Override

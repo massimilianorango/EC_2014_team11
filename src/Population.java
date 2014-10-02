@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Population {
 
@@ -23,7 +24,7 @@ public class Population {
 		individuals.add(individual);
 	}
 
-	public void addIndividuals(ArrayList<Individual> individuals) {
+	public void addIndividuals(List<Individual> individuals) {
 		this.individuals.addAll(individuals);
 	}
 

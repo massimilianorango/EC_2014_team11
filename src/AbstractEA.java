@@ -8,7 +8,6 @@ public abstract class AbstractEA {
 	private ContestEvaluation evaluation;
 	protected int evaluationsLimit;
 	private int evals;
-	protected Population population;
 
 	protected IInitialPopulation initialPopulation; // how to initialize the population
 	protected IParentSelection parentSelection; // how to select parents
@@ -29,11 +28,7 @@ public abstract class AbstractEA {
 		evaluateIndividual(ind, 1);
 	}
 
-	protected void evaluateChild(Individual ind) {
-		evaluateIndividual(ind, population.getGeneration() + 1);
-	}
-
-	private void evaluateIndividual(Individual ind, int generation) throws RuntimeException {
+	public void evaluateIndividual(Individual ind, int generation) throws RuntimeException {
 		Double fitness = (Double) evaluation.evaluate(ind.getDna());
 		if (fitness == null) {
 			throw new RuntimeException("Maximum evaluations were reached.");
