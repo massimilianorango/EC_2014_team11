@@ -68,4 +68,5 @@ public class SurvivalSelectionRouletteWheelFitnessAndAgeBased implements ISurviv
 
 		population.setIndividuals(fitnessSurvivors);
 	}
+
 }

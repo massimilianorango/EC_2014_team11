@@ -5,7 +5,8 @@ import org.vu.contest.ContestEvaluation;
 import org.vu.contest.ContestSubmission;
 
 /**
- * Sets the run environment and chooses the right IAlgorithm to be run. Contains utility methods shared between many classes.
+ * Sets the run environment and chooses the right IAlgorithm to be run. Contains utility methods shared between many
+ * classes.
  */
 public class player11 implements ContestSubmission {
 
@@ -25,10 +26,6 @@ public class player11 implements ContestSubmission {
 		rnd.setSeed(seed);
 	}
 
-	public static Random getRnd() {
-		return rnd;
-	}
-
 	@Override
 	public void setEvaluation(ContestEvaluation evaluation) {
 
@@ -40,12 +37,25 @@ public class player11 implements ContestSubmission {
 		boolean isSeparable = Boolean.parseBoolean(props.getProperty("Separable"));
 
 		if (!isMultimodal && isSeparable && !isRegular) {
-			algorithm = new AlgorithmES(); // something simpler should be better as it is not multimodal -> AlgorithmSimple()
+
+			int mu = 30, lambda = mu * 7, k = 20;
+			algorithm = new AlgorithmES(mu, lambda, new SelectionTournament(k, mu));
+			// something simpler should be better as it is not multimodal -> AlgorithmSimple()
+
 		} else if (isMultimodal && !isSeparable && !isRegular) {
-			algorithm = new AlgorithmES(); // probably a function with randomly distributed (and high) local optima
+
+			int mu = 30, lambda = mu * 7, k = 20;
+			algorithm = new AlgorithmES(mu, lambda, new SelectionTournament(k, mu));
+			// probably a function with randomly distributed (and high) local optima
+
 		} else { // if(isMultimodal && !isSeparable && isRegular){
-			algorithm = new AlgorithmES(); // something like 'Ackley's function' -> ES should be ok but needs improvement
+
+			int mu = 15, lambda = 200;
+			algorithm = new AlgorithmES(mu, lambda, new SelectionAbsoluteFitness(mu));
+			// something like 'Ackley's function' -> ES should be ok but needs improvement
+
 		}
+
 		algorithm.setEvaluation(evaluation, evaluationsLimit);
 
 	}
@@ -58,6 +68,10 @@ public class player11 implements ContestSubmission {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
+	}
+
+	public static Random getRnd() {
+		return rnd;
 	}
 
 	/**
@@ -74,6 +88,23 @@ public class player11 implements ContestSubmission {
 			}
 		}
 		throw new RuntimeException("Random number i=[0-1[ was not inside the given interval.");
+	}
+
+	public static int[] shuffleArray(int size) {
+		int[] ar = new int[size];
+		// initialize array {0...size-1}
+		for (int i = 0; i < ar.length; i++) {
+			ar[i] = i;
+		}
+		// shuffle
+		for (int i = ar.length - 1; i > 0; i--) {
+			int index = rnd.nextInt(i + 1);
+			// Simple swap
+			int a = ar[index];
+			ar[index] = ar[i];
+			ar[i] = a;
+		}
+		return ar;
 	}
 
 	public static void main(String[] args) {

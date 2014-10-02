@@ -1,17 +1,14 @@
 import java.util.ArrayList;
 
 /**
- * Performs recombination using local discrete recombination for DNA and global intermediate recombination for sigma
+ * Performs recombination using local discrete recombination for DNA and local intermediate recombination for sigma
  * values (p. 80, 81 book).
  * 
  * @author max
  */
 public class RecombinationDiscreteAndIntermediate implements IRecombination {
 
-	private ArrayList<Individual> population; // should be used
-
-	public RecombinationDiscreteAndIntermediate(ArrayList<Individual> population) {
-		this.population = population;
+	public RecombinationDiscreteAndIntermediate() {
 	}
 
 	private double[] dnaCrossover(Individual[] parents) {
@@ -23,19 +20,34 @@ public class RecombinationDiscreteAndIntermediate implements IRecombination {
 		return child_dna;
 	}
 
-	// TODO: should be global intermediate recombination and use this.population (now it's local)
+	// TODO: should be global intermediate recombination (now it's local)
 	private double[] sigmaCrossover(Individual[] parents) {
 		double[] child_sigma = new double[player11.F_DIMENSION];
-		Individual parentA = parents[0];// population.remove(player11.getRnd().nextInt(population.size()));
-		Individual parentB = parents[1];// population.remove(player11.getRnd().nextInt(population.size()));
+		Individual parentA = parents[0];
+		Individual parentB = parents[1];
 		for (int i = 0; i < child_sigma.length; i++) {
 			// average of 2 random parents
 			child_sigma[i] = (parentA.getSigma_mutation_step_sizes()[i] + parentB.getSigma_mutation_step_sizes()[i]) / 2;
 		}
-		// population.add(parentA);
-		// population.add(parentB);
 		return child_sigma;
 	}
+
+	// private double[] sigmaCrossover(Individual[] parents) {
+	// double[] child_sigma = new double[player11.F_DIMENSION];
+	// int firstRandom = player11.getRnd().nextInt(population.size());
+	// int secondRandom = -1;
+	// while ((secondRandom = player11.getRnd().nextInt(population.size())) == firstRandom)
+	// ;
+	// Individual parentA = population.get(firstRandom);
+	// Individual parentB = population.get(secondRandom);
+	// for (int i = 0; i < child_sigma.length; i++) {
+	// // average of 2 random parents
+	// child_sigma[i] = (parentA.getSigma_mutation_step_sizes()[i] + parentB.getSigma_mutation_step_sizes()[i]) / 2;
+	// }
+	// // population.add(parentA);
+	// // population.add(parentB);
+	// return child_sigma;
+	// }
 
 	@Override
 	public ArrayList<Individual> crossover(Individual[] parents, int number_of_children) {

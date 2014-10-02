@@ -18,5 +18,4 @@ public class SurvivalSelectionSimple implements ISurvivalSelection {
 			population.getIndividuals().remove(0);
 		}
 	}
-
 }
