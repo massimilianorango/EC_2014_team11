@@ -1,22 +1,16 @@
 package test;
 
 import java.util.Properties;
-import org.vu.contest.ContestEvaluation;
 
-public class AckleyEvaluation implements ContestEvaluation {
+public class AckleyEvaluation extends TuningEvaluation {
 	// Evaluations budget
-	private final static int EVALS_LIMIT_ = 200000;
-	// The base performance. It is derived by doing random search on the sphere function (see function method) with the
-	// same
+	private int EVALS_LIMIT_;
+	// The base performance. It is derived by doing random search on the sphere
+	// function (see function method) with the same
 	// amount of evaluations
 	private final static double BASE_ = 11.5356;
 	// The minimum of the sphere function
 	private final static double ftarget_ = 0;
-
-	// Best fitness so far
-	private double best_;
-	// Evaluations used so far
-	private int evaluations_;
 
 	// Properties of the evaluation
 	private String multimodal_ = "true";
@@ -24,10 +18,17 @@ public class AckleyEvaluation implements ContestEvaluation {
 	private String separable_ = "false";
 	private String evals_ = Integer.toString(EVALS_LIMIT_);
 
-	public AckleyEvaluation() {
-		best_ = 0;
-		evaluations_ = 0;
-	}
+	   
+    public AckleyEvaluation() {
+        this(10000);
+    }
+    
+	public AckleyEvaluation(int EVALS_LIMIT_) {
+	    this.EVALS_LIMIT_ = EVALS_LIMIT_;
+	    evals_ = Integer.toString(EVALS_LIMIT_);
+        best_ = -100;
+        evaluations_ = 0;
+    }
 
 	// The standard sphere function. It has one minimum at 0.
 	private double function(double[] x) {

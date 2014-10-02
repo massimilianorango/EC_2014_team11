@@ -59,6 +59,10 @@ public class player11 implements ContestSubmission {
 		algorithm.setEvaluation(evaluation, evaluationsLimit);
 
 	}
+	
+	public void setTuningAlgorithm(AbstractEA algorithm){
+	    this.algorithm = algorithm;
+	}
 
 	@Override
 	public void run() {

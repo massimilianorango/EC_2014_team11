@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class RecombinationAverage implements IRecombination {
+public class RecombinationAverage extends IRecombination {
 
 	@Override
 	public ArrayList<Individual> crossover(Individual[] parents, int number_of_childs) {

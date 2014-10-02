@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class RecombinationBlendCrossover implements IRecombination {
+public class RecombinationBlendCrossover extends IRecombination {
 
 	public static double APLPHA_CROSS_RATE = 0.5;
 

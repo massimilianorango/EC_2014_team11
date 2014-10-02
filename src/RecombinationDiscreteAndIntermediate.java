@@ -6,10 +6,7 @@ import java.util.ArrayList;
  * 
  * @author max
  */
-public class RecombinationDiscreteAndIntermediate implements IRecombination {
-
-	public RecombinationDiscreteAndIntermediate() {
-	}
+public class RecombinationDiscreteAndIntermediate extends IRecombination {
 
 	private double[] dnaCrossover(Individual[] parents) {
 		// local discrete recombination
@@ -21,7 +18,7 @@ public class RecombinationDiscreteAndIntermediate implements IRecombination {
 	}
 
 	// TODO: should be global intermediate recombination (now it's local)
-	private double[] sigmaCrossover(Individual[] parents) {
+	protected double[] sigmaCrossover(Individual[] parents) {
 		double[] child_sigma = new double[player11.F_DIMENSION];
 		Individual parentA = parents[0];
 		Individual parentB = parents[1];

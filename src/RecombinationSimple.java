@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class RecombinationSimple implements IRecombination {
+public class RecombinationSimple extends IRecombination {
 
 	@Override
 	public ArrayList<Individual> crossover(Individual[] parents, int number_of_childs) {

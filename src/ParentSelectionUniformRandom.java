@@ -20,16 +20,5 @@ public class ParentSelectionUniformRandom implements IParentSelection {
 
 		return parents;
 	}
-	
-	//diff with FUNC 3: 7
-//	public Individual[] selectParents(Population population, int numberOfParents) {
-//		//TODO: should use numberOfParents and not change individuals position in population
-//		ArrayList<Individual> currentPopulation = population.getIndividuals();
-//		Individual[] parents = new Individual[2];
-//		parents[0] = currentPopulation.remove((player11.getRnd().nextInt(currentPopulation.size())));
-//		parents[1] = currentPopulation.get((player11.getRnd().nextInt(currentPopulation.size())));
-//		currentPopulation.add(parents[0]);
-//		return parents;
-//	}
 
 }
