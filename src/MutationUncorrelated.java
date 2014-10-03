@@ -31,17 +31,20 @@ public class MutationUncorrelated implements IMutation {
 
 		double[] dna = individual.getDna();
 		double[] sigmas = individual.getSigma_mutation_step_sizes();
+		
+		double gaussian = player11.getRnd().nextGaussian();
 
 		for (int i = 0; i < dna.length; i++) {
-			double gaussian_1 = player11.getRnd().nextGaussian();
+			
+			double gaussian_i = player11.getRnd().nextGaussian();
 
-			sigmas[i] = sigmas[i] * Math.exp(TAU_1 * player11.getRnd().nextGaussian() + TAU * gaussian_1);
+			sigmas[i] = sigmas[i] * Math.exp(TAU_1 * gaussian + TAU * gaussian_i);
 			// Reset sigma[i] if too small
 			if (sigmas[i] < EPSILON) {
 				sigmas[i] = EPSILON;
 			}
 
-			dna[i] = dna[i] + sigmas[i] * gaussian_1;
+			dna[i] = dna[i] + sigmas[i] * gaussian_i;
 			// Curtailing values to [-5, 5[ if out of interval
 			if (dna[i] > player11.MAX_SEARCH_VALUE) {
 				dna[i] = player11.MAX_SEARCH_VALUE;

@@ -20,8 +20,8 @@ public class SphereEvaluation extends TuningEvaluation {
 
 	// Properties of the evaluation
 	private String multimodal_ = "false";
-	private String regular_ = "true";
 	private String separable_ = "true";
+	private String regular_ = "false";
 	private String evals_ = Integer.toString(EVALS_LIMIT_);
 
 	public SphereEvaluation(){
