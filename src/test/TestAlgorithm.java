@@ -12,10 +12,10 @@ public class TestAlgorithm {
 	
 	@Test
 	public void runEvaluation() {
-		ContestEvaluation localContestEvaluation = new SphereEvaluation();
+//		ContestEvaluation localContestEvaluation = new SphereEvaluation();
 //		ContestEvaluation localContestEvaluation = new AckleyEvaluation();
 //		ContestEvaluation localContestEvaluation = new RastriginEvaluation();
-//		ContestEvaluation localContestEvaluation = new SchwefelEvaluation();
+		ContestEvaluation localContestEvaluation = new SchwefelEvaluation();
 //		ContestEvaluation localContestEvaluation = new DeJong2Evaluation();
 //		ContestEvaluation localContestEvaluation = new SumDifferentPowerFunctionsEvaluation();
 

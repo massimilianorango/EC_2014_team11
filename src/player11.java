@@ -35,8 +35,11 @@ public class player11 implements ContestSubmission {
 		boolean isMultimodal = Boolean.parseBoolean(props.getProperty("Multimodal"));
 		boolean isRegular = Boolean.parseBoolean(props.getProperty("Regular"));
 		boolean isSeparable = Boolean.parseBoolean(props.getProperty("Separable"));
+		
+		int mu = 70, lambda = 490;
+		algorithm = new AlgorithmMM(mu, lambda);
 
-		if (!isMultimodal && isSeparable && !isRegular) {
+		/*if (!isMultimodal && isSeparable && !isRegular) {
 			
 			//NEW VERSION: like f3
 			int mu = 15, lambda = mu * 7;
@@ -59,7 +62,7 @@ public class player11 implements ContestSubmission {
 			algorithm = new AlgorithmES(mu, lambda, new SelectionAbsoluteFitness(mu));
 			// something like 'Ackley's function' -> ES should be ok but needs improvement
 
-		}
+		}*/
 
 		algorithm.setEvaluation(evaluation, evaluationsLimit);
 
