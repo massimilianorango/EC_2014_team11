@@ -37,9 +37,14 @@ public class player11 implements ContestSubmission {
 		boolean isSeparable = Boolean.parseBoolean(props.getProperty("Separable"));
 
 		if (!isMultimodal && isSeparable && !isRegular) {
-
-			int mu = 30, lambda = mu * 7, k = 20;
-			algorithm = new AlgorithmES(mu, lambda, new SelectionTournament(k, mu));
+			
+			//NEW VERSION: like f3
+			int mu = 15, lambda = mu * 7;
+			algorithm = new AlgorithmES(mu, lambda, new SelectionAbsoluteFitness(mu));
+			
+			//OLD VERSION:
+			//int mu = 30, lambda = mu * 7, k = 20;
+			//algorithm = new AlgorithmES(mu, lambda, new SelectionTournament(k, mu));
 			// something simpler should be better as it is not multimodal -> AlgorithmSimple()
 
 		} else if (isMultimodal && !isSeparable && !isRegular) {

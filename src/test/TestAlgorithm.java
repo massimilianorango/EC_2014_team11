@@ -15,9 +15,9 @@ public class TestAlgorithm {
 		ContestEvaluation localContestEvaluation = new SphereEvaluation();
 //		ContestEvaluation localContestEvaluation = new AckleyEvaluation();
 //		ContestEvaluation localContestEvaluation = new RastriginEvaluation();
+//		ContestEvaluation localContestEvaluation = new SchwefelEvaluation();
 //		ContestEvaluation localContestEvaluation = new DeJong2Evaluation();
 //		ContestEvaluation localContestEvaluation = new SumDifferentPowerFunctionsEvaluation();
-//		ContestEvaluation localContestEvaluation = new LangermanEvaluation();
 
 		ContestSubmission localContestSubmission = null;
 		try {
