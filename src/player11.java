@@ -36,8 +36,20 @@ public class player11 implements ContestSubmission {
 		boolean isRegular = Boolean.parseBoolean(props.getProperty("Regular"));
 		boolean isSeparable = Boolean.parseBoolean(props.getProperty("Separable"));
 		
-		int mu = 70, lambda = 490;
-		algorithm = new AlgorithmMM(mu, lambda);
+		if(!isMultimodal) {
+			int mu = 4, lambda = mu*7;
+			algorithm = new AlgorithmUM(mu, lambda);
+		} else {
+			if(!isRegular) {
+//				int mu = 50, lambda = mu*7;
+//				algorithm = new AlgorithmMM(mu, lambda);
+				int mu = 30, lambda = mu * 7, k = 20;
+				algorithm = new AlgorithmES(mu, lambda, new SelectionTournament(k, mu));
+			} else {
+				int mu = 15, lambda = 200;
+				algorithm = new AlgorithmES(mu, lambda, new SelectionAbsoluteFitness(mu));
+			}
+		}
 
 		/*if (!isMultimodal && isSeparable && !isRegular) {
 			

@@ -5,6 +5,7 @@ public class Individual implements Comparable<Individual> {
 	private double[] dna;
 	private double[] sigma_mutation_step_sizes;
 	private double[] recombination_operators;
+	private double[] N_01;
 	private Double fitness;
 	private int generation;
 
@@ -13,6 +14,10 @@ public class Individual implements Comparable<Individual> {
 		this.dna = dna;
 		sigma_mutation_step_sizes = new double[dna.length];
 		recombination_operators = new double[2];
+		N_01 = new double[dna.length];
+		for (int i = 0; i < N_01.length; i++) {
+			N_01[i] = AlgorithmUM.ran.nextGaussian();
+		}
 	}
 
 	@Override
@@ -67,6 +72,10 @@ public class Individual implements Comparable<Individual> {
 			return this.getFitness().compareTo(comp.fitness);
 		}
 		return 0;
+	}
+
+	public double[] getN_01() {
+		return N_01;
 	}
 
 }
