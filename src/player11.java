@@ -43,6 +43,7 @@ public class player11 implements ContestSubmission {
 			if(!isRegular) {
 //				int mu = 50, lambda = mu*7;
 //				algorithm = new AlgorithmMM(mu, lambda);
+				
 				int mu = 30, lambda = mu * 7, k = 20;
 				algorithm = new AlgorithmES(mu, lambda, new SelectionTournament(k, mu));
 			} else {
