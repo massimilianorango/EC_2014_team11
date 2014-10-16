@@ -6,7 +6,7 @@
  */
 public class InitialPopulationSimple implements IInitialPopulation {
 
-	private static final double INITIAL_MUTATION_VALUE = 0.8;
+	private static final double INITIAL_MUTATION_VALUE = 1.2;
 	private int populationSize;
 
 	public InitialPopulationSimple(int populationSize) {

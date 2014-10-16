@@ -34,7 +34,7 @@ public class player11 implements ContestSubmission {
 		int evaluationsLimit = Integer.parseInt(props.getProperty("Evaluations"));
 		boolean isMultimodal = Boolean.parseBoolean(props.getProperty("Multimodal"));
 		boolean isRegular = Boolean.parseBoolean(props.getProperty("Regular"));
-		boolean isSeparable = Boolean.parseBoolean(props.getProperty("Separable"));
+//		boolean isSeparable = Boolean.parseBoolean(props.getProperty("Separable"));
 		
 		if(!isMultimodal) {
 			int mu = 4, lambda = mu*7;
@@ -45,37 +45,12 @@ public class player11 implements ContestSubmission {
 //				algorithm = new AlgorithmMM(mu, lambda);
 				
 				int mu = 30, lambda = mu * 7, k = 20;
-				algorithm = new AlgorithmES(mu, lambda, new SelectionTournament(k, mu));
+				algorithm = new AlgorithmES2(mu, lambda, new SelectionTournament(k, mu), new MutationES2());
 			} else {
 				int mu = 15, lambda = 200;
 				algorithm = new AlgorithmES(mu, lambda, new SelectionAbsoluteFitness(mu));
 			}
 		}
-
-		/*if (!isMultimodal && isSeparable && !isRegular) {
-			
-			//NEW VERSION: like f3
-			int mu = 15, lambda = mu * 7;
-			algorithm = new AlgorithmES(mu, lambda, new SelectionAbsoluteFitness(mu));
-			
-			//OLD VERSION:
-			//int mu = 30, lambda = mu * 7, k = 20;
-			//algorithm = new AlgorithmES(mu, lambda, new SelectionTournament(k, mu));
-			// something simpler should be better as it is not multimodal -> AlgorithmSimple()
-
-		} else if (isMultimodal && !isSeparable && !isRegular) {
-
-			int mu = 30, lambda = mu * 7, k = 20;
-			algorithm = new AlgorithmES(mu, lambda, new SelectionTournament(k, mu));
-			// probably a function with randomly distributed (and high) local optima
-
-		} else { // if(isMultimodal && !isSeparable && isRegular){
-
-			int mu = 15, lambda = 200;
-			algorithm = new AlgorithmES(mu, lambda, new SelectionAbsoluteFitness(mu));
-			// something like 'Ackley's function' -> ES should be ok but needs improvement
-
-		}*/
 
 		algorithm.setEvaluation(evaluation, evaluationsLimit);
 
